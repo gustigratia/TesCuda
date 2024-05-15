@@ -22,7 +22,8 @@ def bbox(boxes, class_name):
             cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 255), 2)
             
 # webcam ver
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
+fps = cv2.CAP_PROP_FPS
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240) 
 while True:
@@ -38,6 +39,7 @@ while True:
         boxes = r.boxes
         bbox(boxes, "payload")
     
+    cv2.putText(frame, str(fps) + " FPS", (0,50), cv2.FONT_HERSHEY_COMPLEX, 1.5, (255,0,0), 3)
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) == 27 : break
 
