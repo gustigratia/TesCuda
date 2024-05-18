@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 from ultralytics import YOLO
-model = YOLO("best.pt")
+model = YOLO("yolo8.pt")
 
 def bbox(boxes, class_name):
     for box in boxes:
