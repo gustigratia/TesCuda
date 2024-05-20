@@ -6,7 +6,7 @@ NMS_THRESHOLD = 0.4
 COLORS = [(0, 255, 255), (255, 255, 0), (0, 255, 0), (255, 0, 0)]
 
 # Load YOLO network
-net = cv2.dnn.readNet("/dataset/custom-yolov4-tiny-detector_final.weights", "/dataset/custom-yolov4-tiny-detector.cfg")
+net = cv2.dnn.readNet("dataset/custom-yolov4-tiny-detector_final.weights", "dataset/custom-yolov4-tiny-detector.cfg")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA_FP16)
 
@@ -30,6 +30,10 @@ while cv2.waitKey(1) < 1:
     classes, scores, boxes = model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
     end = time.time()
 
+    # Initialize drawing time variables
+    start_drawing = time.time()
+    end_drawing = start_drawing
+
     # Draw bounding boxes if any objects are detected
     if len(classes) > 0:
         start_drawing = time.time()
@@ -39,8 +43,6 @@ while cv2.waitKey(1) < 1:
             cv2.rectangle(frame, box, color, 2)
             cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         end_drawing = time.time()
-    else:
-        end_drawing = start
 
     # Display FPS
     fps_label = "FPS: %.2f (excluding drawing time of %.2fms)" % (1 / (end - start), (end_drawing - start_drawing) * 1000)
