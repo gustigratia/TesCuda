@@ -14,7 +14,7 @@ model = cv2.dnn_DetectionModel(net)
 model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
 
 # Open webcam capture (use 0 for the default webcam)
-vc = cv2.VideoCapture(0)
+vc = cv2.VideoCapture(2)
 
 if not vc.isOpened():
     print("Error: Could not open webcam.")
@@ -38,10 +38,11 @@ while cv2.waitKey(1) < 1:
     if len(classes) > 0:
         start_drawing = time.time()
         for (classid, score, box) in zip(classes, scores, boxes):
-            color = COLORS[int(classid) % len(COLORS)]
-            label = "ClassID %d : %f" % (classid, score)
-            cv2.rectangle(frame, box, color, 2)
-            cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            if(score > 0.99):
+                color = COLORS[int(classid) % len(COLORS)]
+                label = "ClassID %d : %f" % (classid, score)
+                cv2.rectangle(frame, box, color, 2)
+                cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         end_drawing = time.time()
 
     # Display FPS
