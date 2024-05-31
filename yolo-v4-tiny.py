@@ -6,7 +6,7 @@ NMS_THRESHOLD = 0.4
 COLORS = [(0, 255, 255), (255, 255, 0), (0, 255, 0), (255, 0, 0)]
 
 # Load YOLO network
-net = cv2.dnn.readNet("newDataset/custom-yolov4-tiny-detector_final.weights", "newDataset/custom-yolov4-tiny-detector.cfg")
+net = cv2.dnn.readNet("newDataset/custom-yolov4-tiny-detector_best.weights", "newDataset/custom-yolov4-tiny-detector.cfg")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA_FP16)
 
@@ -14,7 +14,10 @@ model = cv2.dnn_DetectionModel(net)
 model.setInputParams(size=(416, 416), scale=1/255, swapRB=True)
 
 # Open webcam capture (use 0 for the default webcam)
-vc = cv2.VideoCapture(2)
+vc = cv2.VideoCapture(0)
+
+vc.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+vc.set(cv2.CAP_PROP_FRAME_HEIGHT, 240) 
 
 if not vc.isOpened():
     print("Error: Could not open webcam.")
@@ -38,11 +41,10 @@ while cv2.waitKey(1) < 1:
     if len(classes) > 0:
         start_drawing = time.time()
         for (classid, score, box) in zip(classes, scores, boxes):
-            if(score > 0.99):
-                color = COLORS[int(classid) % len(COLORS)]
-                label = "ClassID %d : %f" % (classid, score)
-                cv2.rectangle(frame, box, color, 2)
-                cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            color = COLORS[int(classid) % len(COLORS)]
+            label = "ClassID %d : %f" % (classid, score)
+            cv2.rectangle(frame, box, color, 2)
+            cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
         end_drawing = time.time()
 
     # Display FPS
