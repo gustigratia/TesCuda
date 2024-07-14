@@ -6,7 +6,7 @@ NMS_THRESHOLD = 0.4
 COLORS = [(0, 255, 255), (255, 255, 0), (0, 255, 0), (255, 0, 0)]
 
 # Load YOLO network
-net = cv2.dnn.readNet("newDataset/custom-yolov4-tiny-detector_best.weights", "newDataset/custom-yolov4-tiny-detector.cfg")
+net = cv2.dnn.readNet("dataset2/custom-yolov4-tiny-detector_best.weights", "dataset2/custom-yolov4-tiny-detector.cfg")
 net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
 net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA_FP16)
 
